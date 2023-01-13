@@ -61,22 +61,13 @@ class ListSorting:
 
     # O(N logN)
     def heap_sort(self, ascending=True):
-        unsorted = self.unsorted
+        unsorted = self.unsorted.copy()
 
         def heapify(arr, size, inx, ascend):
-            left = 2 * inx
-            right = 2 * inx + 1
-
+            left = 2 * inx + 1
+            right = 2 * inx + 2
             node = inx
             if ascend:
-                if left < size and arr[inx] > arr[left]:
-                    node = left
-                if right < size and arr[node] > arr[right]:
-                    node = right
-                if node != inx:
-                    arr[inx], arr[node] = arr[node], arr[inx]
-                    heapify(arr, size, node, ascend)
-            else:
                 if left < size and arr[inx] < arr[left]:
                     node = left
                 if right < size and arr[node] < arr[right]:
@@ -84,17 +75,32 @@ class ListSorting:
                 if node != inx:
                     arr[inx], arr[node] = arr[node], arr[inx]
                     heapify(arr, size, node, ascend)
+            else:
+                if left < size and arr[inx] > arr[left]:
+                    node = left
+                if right < size and arr[node] > arr[right]:
+                    node = right
+                if node != inx:
+                    arr[inx], arr[node] = arr[node], arr[inx]
+                    heapify(arr, size, node, ascend)
 
         def heap(arr, ascend):
-            arr = [None] + arr  # make things more clear
             heap_size = len(arr)
-            for i in range(heap_size // 2, 0, -1):
+            for i in range(heap_size // 2 - 1, -1, -1):
                 heapify(arr, heap_size, i, ascend)
-            return arr[1:]
+
+            for i in range(heap_size - 1, 0, -1):
+                arr[i], arr[0] = arr[0], arr[i]
+                heapify(arr, i, 0, ascend)
+
+            return arr
+
         return heap(unsorted, ascending)
 
     # O(N logN), worst case O(N^2), largely depends on pivot selection
     def quick_sort(self, ascending=True):
+        unsorted = self.unsorted.copy()
+
         def quick(unsorted, low, high, ascend):
             if low < high:
                 pivot = partition(unsorted, low, high, ascend)
@@ -116,8 +122,8 @@ class ListSorting:
         def partition(arr, low, high, ascend):
             pivot_inx = get_pivot(arr, low, high)
             pivot_val = arr[pivot_inx]
-            arr[pivot_inx], arr[low] = arr[low], arr[pivot_inx] # pivot is always placed at 0 index
-            border = low # set border to pivot
+            arr[pivot_inx], arr[low] = arr[low], arr[pivot_inx]  # pivot is always placed at 0 index
+            border = low  # set border to pivot
 
             for i in range(low, high + 1):
                 if ascend:
@@ -135,10 +141,12 @@ class ListSorting:
             # replace border with pivot so it comes in middle
             arr[low], arr[border] = arr[border], arr[low]
             return border
-        return quick(self.unsorted, 0, len(self.unsorted) - 1, ascending)
+
+        return quick(unsorted, 0, len(self.unsorted) - 1, ascending)
 
     # O(N logN), recursive, divide and conquer
     def merge_sort(self, ascending=True):
+        unsorted = self.unsorted.copy()
 
         def merge(unsorted, ascend=ascending):
             sorted_list = []
@@ -166,10 +174,49 @@ class ListSorting:
             sorted_list += left[l:]
             sorted_list += right[r:]
             return sorted_list
-        return merge(self.unsorted)
 
-    def radix_sort(self):
+        return merge(unsorted)
+
+    # O(N + k), where k is length of the longest number in list
+    def bucket_sort(self, ascending=True):
+        unsorted = self.unsorted.copy()
         ...
+
+    # O(N * k), k - length of the longest number in list
+    def radix_sort(self, ascending=True):
+        unsorted = self.unsorted.copy()
+        k = len(str(max(unsorted, default=0)))
+        for digit in range(k):
+            buckets = [[] for _ in range(10)]
+            e = 10 ** digit
+            for num in unsorted:
+                buckets[num // e % 10].append(num)
+            unsorted = []
+            if ascending:
+                for bucket in buckets:
+                    unsorted += bucket
+            else:
+                for d in range(len(buckets) - 1, -1, -1):
+                    unsorted += buckets[d]
+        return unsorted
+
+    # O(N + k), where k is range between lowest and highest element
+    def counting_sort(self, ascending=True):
+        unsorted = self.unsorted.copy()
+        # needed for negative numbers
+        low = min(unsorted)
+        high = max(unsorted)
+        count = [[] for _ in range(low, high + 1)]
+        result = []
+        for item in unsorted:
+            count[item - low].append(item)
+        if ascending:
+            for asc in count:
+                result += asc
+        else:
+            for d in range(len(count) - 1, -1, -1):
+                result += count[d]
+        return result
 
     def __str__(self):
         s = 'Unsorted list: ' + ', '.join(map(str, self.unsorted))
