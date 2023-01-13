@@ -1,16 +1,29 @@
-# This is a sample Python script.
+from graphs import Graph
+from list_sorting import ListSorting
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# edges1 = [[0, 1, 5], [0, 2, 10], [1, 4, 4], [1, 5, 1], [2, 3, 2], [2, 6, 3]]
+# graph1 = Graph(7, edges1)
+# print(graph1.print_adj_list())
+# print(graph1.print_adj_matrix())
 
+new_list = ListSorting([6,2,31,22,10])
+print(new_list)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+print(new_list.insertion_sort(ascending=True))
+print(new_list.insertion_sort(ascending=False))
 
+print(new_list.selection_sort(ascending=True))
+print(new_list.selection_sort(ascending=False))
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+print(new_list.bubble_sort(ascending=True))
+print(new_list.bubble_sort(ascending=False))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(new_list.merge_sort(ascending=True))
+print(new_list.merge_sort(ascending=False))
+print('-quick-')
+print(new_list.quick_sort(ascending=True))
+print(new_list.quick_sort(ascending=False))
+
+print('-heap-')
+print(new_list.heap_sort(ascending=True))
+print(new_list.heap_sort(ascending=False))
