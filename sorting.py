@@ -1,7 +1,7 @@
 import math
 
 
-class ListSorting:
+class Sorting:
     def __init__(self, unsorted):
         self.unsorted = unsorted
 
