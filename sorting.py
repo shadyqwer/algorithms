@@ -1,5 +1,7 @@
 import math
 from timeit import default_timer as timer
+from datetime import timedelta
+
 
 class Sorting:
     def __init__(self, unsorted):
@@ -261,47 +263,47 @@ class Sorting:
         start = timer()
         self.bubble_sort(test, asc)
         end = timer()
-        print("Bubble sort: {} seconds".format(end-start))
+        print("Bubble sort: {}".format(timedelta(seconds=end-start)))
 
         start = timer()
         self.selection_sort(test, asc)
         end = timer()
-        print("Selection sort: {} seconds".format(end - start))
+        print("Selection sort: {}".format(timedelta(seconds=end-start)))
 
         start = timer()
         self.insertion_sort(test, asc)
         end = timer()
-        print("Insertion sort: {} seconds".format(end - start))
+        print("Insertion sort: {}".format(timedelta(seconds=end-start)))
 
         start = timer()
         self.heap_sort(test, asc)
         end = timer()
-        print("Heap sort: {} seconds".format(end - start))
-
-        start = timer()
-        a = self.quick_sort(test, asc)
-        end = timer()
-        print("Quick sort: {} seconds".format(end - start))
+        print("Heap sort: {}".format(timedelta(seconds=end-start)))
 
         start = timer()
         self.merge_sort(test, asc)
         end = timer()
-        print("Merge sort: {} seconds".format(end - start))
+        print("Merge sort: {}".format(timedelta(seconds=end-start)))
 
         start = timer()
         self.bucket_sort(test, asc)
         end = timer()
-        print("Bucket sort: {} seconds".format(end - start))
+        print("Bucket sort: {}".format(timedelta(seconds=end-start)))
 
         start = timer()
         self.radix_sort(test, asc)
         end = timer()
-        print("Radix sort: {} seconds".format(end - start))
+        print("Radix sort: {}".format(timedelta(seconds=end-start)))
 
         start = timer()
         self.counting_sort(test, asc)
         end = timer()
-        print("Counting sort: {} seconds".format(end - start))
+        print("Counting sort: {}".format(timedelta(seconds=end-start)))
+
+        start = timer()
+        self.quick_sort(test, asc)
+        end = timer()
+        print("Quick sort: {}".format(timedelta(seconds=end-start)))
 
         return
 
