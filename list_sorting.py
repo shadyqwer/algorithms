@@ -193,7 +193,6 @@ class ListSorting:
     # O(N + k), where k is length of the longest number in list
     # worst O(N^2)
     # divide elements into buckets, sort using quick/insertion sort, put back together
-    # can be done recursively
     def bucket_sort(self, unsorted=None, ascending=True):
         if unsorted is None:
             unsorted = self.unsorted.copy()
