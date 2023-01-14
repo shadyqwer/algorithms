@@ -1,5 +1,5 @@
 import math
-
+from timeit import default_timer as timer
 
 class Sorting:
     def __init__(self, unsorted):
@@ -110,8 +110,6 @@ class Sorting:
     def quick_sort(self, unsorted=None, ascending=True):
         if unsorted is None:
             unsorted = self.unsorted.copy()
-        if len(unsorted) <= 1:
-            return unsorted
 
         def quick(arr, low, high, ascend):
             if low < high:
@@ -125,7 +123,8 @@ class Sorting:
             mid = (low + high) // 2
             pivot = high
             if arr[low] < arr[mid]:
-                pivot = mid
+                if arr[mid] < arr[high]:
+                    pivot = mid
             elif arr[low] < arr[high]:
                 pivot = low
             return pivot
@@ -154,7 +153,7 @@ class Sorting:
             arr[low], arr[border] = arr[border], arr[low]
             return border
 
-        return quick(unsorted, 0, len(self.unsorted) - 1, ascending)
+        return quick(unsorted, 0, len(unsorted) - 1, ascending)
 
     # O(N logN), recursive, divide and conquer
     def merge_sort(self, unsorted=None, ascending=True):
@@ -210,10 +209,10 @@ class Sorting:
         unsorted = []  # empty unsorted element to put buckets into
         if ascending:
             for bucket in buckets:
-                unsorted += self.quick_sort(bucket, ascending=ascending)
+                unsorted += self.quick_sort(unsorted=bucket, ascending=ascending)
         else:
             for d in range(len(buckets) - 1, -1, -1):
-                unsorted += self.quick_sort(buckets[d], ascending=ascending)
+                unsorted += self.quick_sort(unsorted=buckets[d], ascending=ascending)
         return unsorted
 
     # O(N * k), k - length of the longest number in list
@@ -254,6 +253,58 @@ class Sorting:
             for d in range(len(count) - 1, -1, -1):
                 result += count[d]
         return result
+
+    def benchmark(self, test=None, asc=True):
+        if not test:
+            test = self.unsorted.copy()
+
+        start = timer()
+        self.bubble_sort(test, asc)
+        end = timer()
+        print("Bubble sort: {} seconds".format(end-start))
+
+        start = timer()
+        self.selection_sort(test, asc)
+        end = timer()
+        print("Selection sort: {} seconds".format(end - start))
+
+        start = timer()
+        self.insertion_sort(test, asc)
+        end = timer()
+        print("Insertion sort: {} seconds".format(end - start))
+
+        start = timer()
+        self.heap_sort(test, asc)
+        end = timer()
+        print("Heap sort: {} seconds".format(end - start))
+
+        start = timer()
+        a = self.quick_sort(test, asc)
+        end = timer()
+        print("Quick sort: {} seconds".format(end - start))
+
+        start = timer()
+        self.merge_sort(test, asc)
+        end = timer()
+        print("Merge sort: {} seconds".format(end - start))
+
+        start = timer()
+        self.bucket_sort(test, asc)
+        end = timer()
+        print("Bucket sort: {} seconds".format(end - start))
+
+        start = timer()
+        self.radix_sort(test, asc)
+        end = timer()
+        print("Radix sort: {} seconds".format(end - start))
+
+        start = timer()
+        self.counting_sort(test, asc)
+        end = timer()
+        print("Counting sort: {} seconds".format(end - start))
+
+        return
+
 
     def __str__(self):
         s = 'Unsorted list: ' + ', '.join(map(str, self.unsorted))
