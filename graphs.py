@@ -2,6 +2,7 @@ import math
 
 
 class Graph:
+    # edges = [node1, node2, weight]
     def __init__(self, num_nodes, edges, directed=False):
         # check if directed and weighted
         self.num_nodes = num_nodes
@@ -66,6 +67,35 @@ class Graph:
         all_paths = []
         self.__ham_helper(path, position=1, all_paths=all_paths)
         return all_paths
+
+    # Dijkstra finds the shortest paths from one node to every other node in graph
+    # Either directed or undirected, on weighted use breath-first search
+    # Runtime depends on data structure used for distance and unvisited nodes
+    def dijkstra(self, source):
+        if not self.weighted:
+            print("Graph is not weighted, use BFS.")
+            return False
+        distance = {node: math.inf for node in range(self.num_nodes)}  # set each distance at infinity
+        distance[source] = 0  # starting distance to 0
+        unvisited = [i for i in range(self.num_nodes)]  # unvisited nodes
+
+        while unvisited:
+            # find node with minimum distance so far, in first step it is always source
+            min_node = None
+            for node in unvisited:
+                if min_node is None:
+                    min_node = node
+                elif distance[node] < distance[min_node]:
+                    min_node = node
+
+            # loop over edges of min distance node
+            for edge in range(len(self.adj_list[min_node])):
+                cost = self.weight[min_node][edge]  # cost to next outgoing edge
+                next_node = self.adj_list[min_node][edge]  # outgoing edge
+                if cost + distance[min_node] < distance[next_node]:  # reduce cost if can
+                    distance[next_node] = cost + distance[min_node]
+            unvisited.remove(min_node)
+        return distance
 
     def __str__(self):
         result = 'v: [(v, w), (v w),...]\n'
