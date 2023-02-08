@@ -68,9 +68,10 @@ class Graph:
         self.__ham_helper(path, position=1, all_paths=all_paths)
         return all_paths
 
-    # Dijkstra finds the shortest paths from one node to every other node in graph
-    # Either directed or undirected, on weighted use breath-first search
-    # Runtime depends on data structure used for distance and unvisited nodes
+    # Dijkstra finds the shortest paths from one node to every other node in simple graph.
+    # Either directed or undirected, on weighted use breath-first search.
+    # Does not work on negative edge weights.
+    # Runtime depends on data structure used for distance and unvisited nodes.
     def dijkstra(self, source):
         if not self.weighted:
             print("Graph is not weighted, use BFS.")
@@ -95,6 +96,31 @@ class Graph:
                 if cost + distance[min_node] < distance[next_node]:  # reduce cost if can
                     distance[next_node] = cost + distance[min_node]
             unvisited.remove(min_node)
+        return distance
+
+    # As Dijkstra, it is also used for finding the shortest paths from one node to every other node in simple graph.
+    # Bellman-Ford works for negative edge weights but without negative cycles.
+    # Finds the shortest paths in O(V * E) where V is number of nodes and E number of edges.
+    # Max edges any path can have is V - 1, so if in Vth iteration if there is shorter path negative cycle exist.
+    def bellman_ford(self, source):
+        distance = {node: math.inf for node in range(self.num_nodes)}  # distance for all nodes
+        distance[source] = 0  # source node
+        # if in last iteration distance change there is negative weight cycle??
+        # if nothing change in one iteration we are done and can break
+        for i in range(self.num_nodes):
+            done = True
+            for node in range(self.num_nodes):  # loop over every node
+                for edge in range(len(self.adj_list[node])):  # loop over outgoing edges
+                    cost = self.weight[node][edge]
+                    next_node = self.adj_list[node][edge]
+                    if cost + distance[node] < distance[next_node]:
+                        distance[next_node] = cost + distance[node]
+                        done = False
+                        if i == self.num_nodes - 1:  # there is negative weight cycle
+                            print("Found negative edge weight cycle.")
+                            return False
+            if done:  # nothing changed, the shortest paths found
+                break
         return distance
 
     def __str__(self):
