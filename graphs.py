@@ -105,8 +105,6 @@ class Graph:
     def bellman_ford(self, source):
         distance = {node: math.inf for node in range(self.num_nodes)}  # distance for all nodes
         distance[source] = 0  # source node
-        # if in last iteration distance change there is negative weight cycle??
-        # if nothing change in one iteration we are done and can break
         for i in range(self.num_nodes):
             done = True
             for node in range(self.num_nodes):  # loop over every node
