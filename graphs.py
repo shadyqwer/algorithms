@@ -121,6 +121,47 @@ class Graph:
                 break
         return distance
 
+    # Prim's algorithm finds minimum (weight) spanning tree in weighted undirected graph.
+    # Runs in O(V^2) where V is number of nodes
+    # Takes adjacency matrix as input and returns parent pointers.
+    def prims_mst(self):
+        mst = [False for _ in range(self.num_nodes)]  # keep track of nodes included in mst so far
+        parent = [None if i else -1 for i in range(self.num_nodes)]  # parent nodes, first node will have no parent
+        value = [math.inf if i else 0 for i in range(self.num_nodes)]  # keep track of min weights, starting node is 0
+
+        for _ in range(self.num_nodes):  # for each node in graph
+            # find minimum weight vertex from vertices not in mst yet, and get its index
+            next_node = math.inf
+            for v in range(self.num_nodes):
+                if value[v] < next_node and not mst[v]:
+                    next_node = value[v]
+                    index = v
+
+            mst[index] = True  # include next node in mst
+            for vertex in range(self.num_nodes):  # loop over its edges
+                # check if vertex not in mst, if edge exist, and if value is smaller than current smallest
+                if not mst[vertex] and self.matrix[index][vertex] and self.matrix[index][vertex] < value[vertex]:
+                    parent[vertex] = index  # update parent pointer
+                    value[vertex] = self.matrix[index][vertex]  # and value
+
+        # if any node doesn't have parent graph is disconnected
+        if None in parent:
+            return False
+        return parent
+
+    def print_prims_mst(self):
+        parent = self.prims_mst()
+        # check if graph is disconnected
+        if not parent or None in parent:
+            return False
+
+        total_weight = 0
+        for i in range(1, self.num_nodes):  # 0 vertex have no parent
+            print('{} - {}: {}'.format(parent[i], i, self.matrix[i][parent[i]]))  # print edges and weights
+            total_weight += self.matrix[i][parent[i]]
+        print('Total weight: ', total_weight)
+        return True
+
     def __str__(self):
         result = 'v: [(v, w), (v w),...]\n'
         for i in range(len(self.adj_list)):
