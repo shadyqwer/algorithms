@@ -49,6 +49,8 @@ class Graph:
             print_list += "{}: {}\n".format(i, pairs)
         return print_list
 
+    # Hamiltonian paths are paths that visit every node in a graph exactly once.
+    # Hamiltonian paths are a special case of Hamiltonian cycles, cycles that visit every node in a graph exactly once.
     def __ham_helper(self, path, position, all_paths):
         if position == self.num_nodes:
             if self.matrix[path[-1]][path[0]]:
