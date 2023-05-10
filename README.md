@@ -1,5 +1,22 @@
-# algorithms
-I have currently implemented the algorithms in this repository in Python, with the main goal of understanding their intuition and principles. However, I plan to implement them in Java or C when I have the time. I also plan to add more algorithms to the repository soon.
+# Algorithms
+This repository contains implementations of various algorithms that I have learned while studying MIT courses 6.006 and 6.046.
 
-
+### List of Algorithms
+#### Sorting
+- Bubble Sort
+- Selection Sort
+- Insertion Sort
+- Heap Sort
+- Merge Sort
+- Bucket Sort
+- Radix Sort
+- Counting Sort
+- Quick Sort
+#### Graph Theory
+- Hamiltonian Cycles
+- Dijkstra's Algorithm
+- Bellman-Ford Algorithm
+- Prim's Minimum Spanning Tree Algorithm
+#### Data Structures
+- Max Heap
 
